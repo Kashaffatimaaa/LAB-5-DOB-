@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dream Cart 💖</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #f8c6ff, #b19cd9);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      color: #a020f0;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background-color: rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+    }
+
+    .product-list {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .product {
+      background-color: #fff;
+      border-radius: 15px;
+      padding: 15px;
+      width: 180px;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .product:hover {
+      transform: translateY(-5px);
+    }
+
+    .product button {
+      background: linear-gradient(45deg, #e573ff, #b659ff);
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .product button:hover {
+      background: linear-gradient(45deg, #b659ff, #e573ff);
+    }
+
+    table {
+      width: 100%;
+      margin-top: 30px;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 2px solid #d8b2ff;
+    }
+
+    th {
+      background-color: #e9d1ff;
+      color: #4b0082;
+    }
+
+    td button {
+      background-color: #ff7de9;
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    td button:hover {
+      background-color: #ff47d1;
+    }
+
+    .total {
+      text-align: right;
+      font-size: 20px;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #800080;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #5e2a84;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>💜 Dream Cart 💖</header>
+
+  <div class="container">
+    <div class="product-list">
+      <div class="product">
+        <h3>Pink Perfume</h3>
+        <p>Rs. 2500</p>
+        <button onclick="addToCart('Pink Perfume', 2500)">Add to Cart</button>
+      </div>
+      <div class="product">
+        <h3>Lavender Candle</h3>
+        <p>Rs. 1800</p>
+        <button onclick="addToCart('Lavender Candle', 1800)">Add to Cart</button>
+      </div>
+      <div class="product">
+        <h3>Silk Scarf</h3>
+        <p>Rs. 3200</p>
+        <button onclick="addToCart('Silk Scarf', 3200)">Add to Cart</button>
+      </div>
+      <div class="product">
+        <h3>Rose Quartz Ring</h3>
+        <p>Rs. 1500</p>
+        <button onclick="addToCart('Rose Quartz Ring', 1500)">Add to Cart</button>
+      </div>
+    </div>
+
+    <table id="cartTable">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Price (Rs.)</th>
+          <th>Quantity</th>
+          <th>Total</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="total" id="totalAmount">Total: Rs. 0</div>
+  </div>
+
+  <footer>✨ Created with 💜 and JavaScript ✨</footer>
+
+  <script>
+    let cart = [];
+
+    function addToCart(itemName, price) {
+      try {
+        if (!itemName || price <= 0) throw "Invalid product details";
+
+        let item = cart.find(i => i.name === itemName);
+        if (item) {
+          item.qty++;
+        } else {
+          cart.push({ name: itemName, price: price, qty: 1 });
+        }
+        displayCart();
+      } catch (err) {
+        alert("Error: " + err);
+      }
+    }
+
+    function removeFromCart(itemName) {
+      cart = cart.filter(i => i.name !== itemName);
+      displayCart();
+    }
+
+    function displayCart() {
+      const tbody = document.querySelector("#cartTable tbody");
+      tbody.innerHTML = "";
+
+      let total = 0;
+      for (let item of cart) {
+        let row = `<tr>
+          <td>${item.name}</td>
+          <td>${item.price}</td>
+          <td>${item.qty}</td>
+          <td>${item.price * item.qty}</td>
+          <td><button onclick="removeFromCart('${item.name}')">Remove</button></td>
+        </tr>`;
+        tbody.innerHTML += row;
+        total += item.price * item.qty;
+      }
+
+      document.getElementById("totalAmount").textContent = "Total: Rs. " + total;
+    }
+  </script>
+</body>
+</html>
